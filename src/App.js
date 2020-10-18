@@ -7,15 +7,11 @@ import { DeveloperConsole } from './substrate-lib/components';
 
 import AccountSelector from './AccountSelector';
 import BlockInfo from './BlockInfo';
-import Balances from './Balances';
 import BlockNumber from './BlockNumber';
-import Events from './Events';
-import Interactor from './Interactor';
+import BlockSearch from './BlockSearch';
 import Metadata from './Metadata';
 import NodeInfo from './NodeInfo';
-import TemplateModule from './TemplateModule';
-import Transfer from './Transfer';
-import Upgrade from './Upgrade';
+
 
 function Main () {
   const [accountAddress, setAccountAddress] = useState(null);
@@ -63,7 +59,10 @@ function Main () {
             <BlockNumber finalized />
           </Grid.Row>
           <Grid.Row stretched>
-          <BlockInfo />
+            <BlockInfo />
+          </Grid.Row>
+          <Grid.Row stretched>
+            <BlockSearch />
           </Grid.Row>
         </Grid>
       </Container>

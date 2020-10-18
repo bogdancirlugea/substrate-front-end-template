@@ -6,38 +6,42 @@ import { useSubstrate } from './substrate-lib';
 function Main(props) {
   const { api } = useSubstrate();
   const [blockInfo, setBlockInfo] = useState();
+  const [blockhash, setBlockhash] = useState();
 
-  useEffect(() => {
-    let unsubscribeAll = null;
-    const getInfo = async () => {
-      try {
-        api.rpc.chain.subscribeNewHeads((header) => {
-          setBlockInfo(header);
-        });
-      } catch (e) {
-        console.error(e);
-      }
-    };
-    getInfo();
-    return () => unsubscribeAll && unsubscribeAll();
-  }, [api.derive.chain, api.rpc.chain, blockInfo]);
-
+  const getBlockHashInfo = async (blockhash) => {
+    try {
+      const blockInfo = await api.rpc.chain.getHeader(blockhash);
+      setBlockInfo(blockInfo);
+    } catch (e) {
+      console.error(e);
+    }
+  };
   return (
     <Grid.Column>
-      <h1>Block info</h1>
-      {blockInfo && (
+    <h1>Search block by hash</h1>
+      <Form
+        onSubmit={async (e, { value }) => await getBlockHashInfo(blockhash)}
+        size='medium'
+      >
+        <Form.Group widths={10}>
+          <Form.Input
+            size='large'
+            width={10}
+            placeholder={'Search By Block Hash'}
+            onChange={(e, { value }) => setBlockhash(value)}
+          />
+          <Form.Button content="Search" />
+        </Form.Group>
+      </Form>
+      {blockInfo && blockInfo.number && (
         <Table celled>
           <Table.Body>
             <Table.Row>
-              <Table.Cell>Current Block</Table.Cell>
+              <Table.Cell> Block </Table.Cell>
               <Table.Cell>{blockInfo.number.toNumber()}</Table.Cell>
             </Table.Row>
             <Table.Row>
-              <Table.Cell>Hash</Table.Cell>
-              <Table.Cell>{blockInfo.hash.toHuman()}</Table.Cell>
-            </Table.Row>
-            <Table.Row>
-              <Table.Cell>Parent Hash</Table.Cell>
+              <Table.Cell>ParentHash</Table.Cell>
               <Table.Cell>{blockInfo.parentHash.toHuman()}</Table.Cell>
             </Table.Row>
             <Table.Row>
@@ -55,15 +59,7 @@ function Main(props) {
   );
 }
 
-export default function BlockInfo(props) {
+export default function BlockSearch(props) {
   const { api } = useSubstrate();
-  return api.rpc &&
-    api.rpc.system &&
-    api.rpc.chain &&
-    api.derive.chain &&
-    api.derive.chain.bestNumber &&
-    api.rpc.chain.getBlock &&
-    api.rpc.chain.subscribeNewHeads ? (
-    <Main {...props} />
-  ) : null;
+  return api.rpc && api.rpc.chain.getHeader ? <Main {...props} /> : null;
 }
