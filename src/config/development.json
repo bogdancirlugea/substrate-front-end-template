@@ -3,5 +3,5 @@
     "Address": "AccountId",
     "LookupSource": "AccountId"
   },
-  "PROVIDER_SOCKET": "wss://dev-node.substrate.dev"
+  "PROVIDER_SOCKET": "wss://rpc.polkadot.io"
 }
