@@ -6,6 +6,7 @@ import { SubstrateContextProvider, useSubstrate } from './substrate-lib';
 import { DeveloperConsole } from './substrate-lib/components';
 
 import AccountSelector from './AccountSelector';
+import BlockInfo from './BlockInfo';
 import Balances from './Balances';
 import BlockNumber from './BlockNumber';
 import Events from './Events';
@@ -62,6 +63,7 @@ function Main () {
             <BlockNumber finalized />
           </Grid.Row>
           <Grid.Row stretched>
+          <BlockInfo />
           </Grid.Row>
         </Grid>
       </Container>
